@@ -9,11 +9,10 @@
     <link rel="stylesheet" href="material/css/st.css">
 </head>
 <body>
-    
-
     <div class="frens-invite">
         <div class="frens-invite-button">
-            <input type="text" value="https://t.me/momocoin_bot?ref=${userId}" id="link" readonly>
+            <!-- Referral link input -->
+            <input type="text" id="link" readonly>
             <button id="copyButton">Copy Link</button>
         </div>
     </div>
@@ -40,7 +39,27 @@
             <span>BALANCE</span>
         </a>
     </nav>
-    <script src="material/js/cojs.js"></script>
-    <script src="material/js/scripts.js"></script>
+
+    <script>
+        // Example User ID (replace with dynamic logic from your backend or authentication)
+        const userId = '12345'; // Replace with actual user ID logic
+
+        // Set the referral link dynamically
+        const referralLink = `https://t.me/momocoin_bot?ref=${userId}`;
+        document.getElementById('link').value = referralLink;
+
+        // Copy to clipboard functionality
+        document.getElementById('copyButton').addEventListener('click', () => {
+            const link = document.getElementById('link');
+            navigator.clipboard.writeText(link.value)
+                .then(() => {
+                    alert('Referral link copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy referral link:', err);
+                    alert('Error copying link. Please try again.');
+                });
+        });
+    </script>
 </body>
 </html>
