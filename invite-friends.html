@@ -41,25 +41,44 @@
     </nav>
 
     <script>
-        // Example User ID (replace with dynamic logic from your backend or authentication)
-        const userId = '12345'; // Replace with actual user ID logic
+        // Simulate getting the user's referral ID from the backend
+        async function fetchUserReferralId() {
+            try {
+                // Example: Replace with an actual API call to fetch the user ID
+                const response = await fetch('/api/get-user-id');
+                const data = await response.json();
+                return data.userId; // Ensure the backend returns a `userId` field
+            } catch (error) {
+                console.error('Failed to fetch user referral ID:', error);
+                return null; // Return null if there's an error
+            }
+        }
 
-        // Set the referral link dynamically
-        const referralLink = `https://t.me/MomoOG_bot?ref=${userId}`;
-        document.getElementById('link').value = referralLink;
+        async function setupReferralLink() {
+            const userId = await fetchUserReferralId();
 
-        // Copy to clipboard functionality
-        document.getElementById('copyButton').addEventListener('click', () => {
-            const link = document.getElementById('link');
-            navigator.clipboard.writeText(link.value)
-                .then(() => {
-                    alert('Referral link copied to clipboard!');
-                })
-                .catch(err => {
-                    console.error('Failed to copy referral link:', err);
-                    alert('Error copying link. Please try again.');
-                });
-        });
+            // Fallback: Generate a temporary referral link if no userId is available
+            const referralId = userId || `temp-${Date.now()}`;
+            const referralLink = `https://t.me/MomoOG_bot?ref=${referralId}`;
+            
+            // Set the link value in the input field
+            const linkInput = document.getElementById('link');
+            linkInput.value = referralLink;
+
+            // Set up the copy button
+            const copyButton = document.getElementById('copyButton');
+            copyButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(linkInput.value)
+                    .then(() => alert('Referral link copied to clipboard!'))
+                    .catch(err => {
+                        console.error('Failed to copy referral link:', err);
+                        alert('Error copying link. Please try again.');
+                    });
+            });
+        }
+
+        // Initialize referral setup
+        setupReferralLink();
     </script>
 </body>
 </html>
